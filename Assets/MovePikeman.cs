@@ -4,8 +4,9 @@ using System.Collections;
 [RequireComponent(typeof(Animator))]
 public class MovePikeman : MonoBehaviour {
 
-	public float MovementSpeed = 1f;
+	public float MovementSpeed = 0.1f;
 	public float RotationSpeed = 5f;
+	public bool attack = false;
 
 	// Use this for initialization
 	void Start () {
@@ -31,14 +32,27 @@ public class MovePikeman : MonoBehaviour {
 			this.transform.Rotate(this.transform.up, -RotationSpeed);
 		}
 
-		if (direction.sqrMagnitude > 0f) {
-			direction = direction.normalized;
-			speed = direction * Time.deltaTime * MovementSpeed;
-
-			this.transform.position = speed + this.transform.position;
+		if(Input.GetButtonDown("Fire1")) {
+			MovementSpeed = 0.2f;	
+		}
+		else if(Input.GetButtonUp("Fire1")) {
+			MovementSpeed = 0.1f;
 		}
 
-		//Debug.Log("Speed: " + speed.magnitude);
+		if(Input.GetButtonDown("Fire2")) {
+			attack = true;	
+		}
+		else if(Input.GetButtonUp("Fire2")) {
+			attack = false;
+		}
+		
+		if (direction.sqrMagnitude > 0f) {
+
+			speed = direction  * MovementSpeed;
+			this.transform.position = speed + this.transform.position;
+		}
+	
+		this.GetComponent<Animator>().SetBool("attack", attack);
 		this.GetComponent<Animator>().SetFloat("runSpeed", speed.magnitude);
 	}
 }
