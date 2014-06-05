@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Animator))]
 public class MovePikeman : MonoBehaviour {
 
 	public float MovementSpeed = 1f;
@@ -14,6 +15,8 @@ public class MovePikeman : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Vector3 direction = Vector3.zero;
+		Vector3 speed = Vector3.zero;
+
 		if (Input.GetKey(KeyCode.W)) {
 			direction = this.transform.forward;
 		}
@@ -30,11 +33,12 @@ public class MovePikeman : MonoBehaviour {
 
 		if (direction.sqrMagnitude > 0f) {
 			direction = direction.normalized;
-			Vector3 speed = direction * Time.deltaTime * MovementSpeed;
+			speed = direction * Time.deltaTime * MovementSpeed;
 
 			this.transform.position = speed + this.transform.position;
-
-			this.GetComponent<Animator>().SetFloat("runSpeed", speed.magnitude);
 		}
+
+		//Debug.Log("Speed: " + speed.magnitude);
+		this.GetComponent<Animator>().SetFloat("runSpeed", speed.magnitude);
 	}
 }
